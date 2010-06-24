@@ -19,11 +19,13 @@ sub _match {
     my $path = shift;
 
     if ($self->case_sensitive) {
-        return $path->path eq $self->string;
+        return {} if $path->path eq $self->string;
     }
     else {
-        return lc($path->path) eq lc($self->string);
+        return {} if lc($path->path) eq lc($self->string);
     }
+
+    return;
 }
 
 sub _prefix_match {

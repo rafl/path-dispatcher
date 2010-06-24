@@ -14,16 +14,13 @@ sub _match {
 
     return unless my @matches = $path->path =~ $self->regex;
 
+    # if $' is in the program at all, then it slows down every single regex
+    # we only want to include it if we have to
     my $results = {
         positional_captures => \@matches,
         named_captures      => \%+,
+        ($self->prefix ? (leftover => eval q{$'}) : ()),
     };
-
-    # if $' is in the program at all, then it slows down every single regex
-    # we only want to include it if we have to
-    if ($self->prefix) {
-        return $results, eval q{$'};
-    }
 
     return $results;
 }

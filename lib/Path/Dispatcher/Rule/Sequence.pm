@@ -44,7 +44,8 @@ sub _match {
     my $leftover = $self->untokenize(@$tokens);
     return {
         positional_captures => $matched,
-    }, $leftover;
+        leftover => $leftover,
+    };
 }
 
 sub complete {

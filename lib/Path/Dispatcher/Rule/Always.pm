@@ -5,7 +5,7 @@ extends 'Path::Dispatcher::Rule';
 sub _match {
     my $self = shift;
     my $path = shift;
-    return (1, $path->path);
+    return { leftover => $path->path };
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -20,12 +20,12 @@ sub _match {
 
     if ($self->case_sensitive) {
         for my $value (@{ $self->enum }) {
-            return 1 if $path->path eq $value;
+            return {} if $path->path eq $value;
         }
     }
     else {
         for my $value (@{ $self->enum }) {
-            return 1 if lc($path->path) eq lc($value);
+            return {} if lc($path->path) eq lc($value);
         }
     }
 }

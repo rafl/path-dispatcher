@@ -27,28 +27,25 @@ sub match {
     my $self = shift;
     my $path = shift;
 
-    my ($result, $leftover);
+    my $result;
 
     if ($self->prefix) {
-        ($result, $leftover) = $self->_prefix_match($path);
+        $result = $self->_prefix_match($path);
     }
     else {
-        ($result, $leftover) = $self->_match($path);
+        $result = $self->_match($path);
     }
 
     if (!$result) {
-        $self->trace(leftover => $leftover, match => undef, path => $path)
+        $self->trace(match => undef, path => $path, %$result)
             if $ENV{'PATH_DISPATCHER_TRACE'};
         return;
     }
 
-    $leftover = '' if !defined($leftover);
-
     my $match = $self->match_class->new(
-        path     => $path,
-        rule     => $self,
-        leftover => $leftover,
-        (ref $result eq 'HASH') ? %$result : (),
+        path => $path,
+        rule => $self,
+        %$result,
     );
 
     $self->trace(match => $match) if $ENV{'PATH_DISPATCHER_TRACE'};

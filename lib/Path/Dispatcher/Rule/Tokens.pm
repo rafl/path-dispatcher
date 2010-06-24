@@ -55,7 +55,8 @@ sub _match {
     my $leftover = $self->untokenize(@$got);
     return {
         positional_captures => $matched,
-    }, $leftover;
+        leftover => $leftover,
+    };
 }
 
 sub complete {
