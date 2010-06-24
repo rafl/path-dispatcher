@@ -58,7 +58,7 @@ sub _run_with_capture_vars {
     *{ ++$i } = \$_ for @{ $self->positional_captures };
 
     # populate %+
-    *% = $self->named_captures;
+    *+ = $self->named_captures;
 
     $code->();
 }
