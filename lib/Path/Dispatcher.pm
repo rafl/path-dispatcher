@@ -1,6 +1,6 @@
 package Path::Dispatcher;
 use Any::Moose;
-use 5.008001;
+use 5.010;
 
 our $VERSION = '0.15';
 
