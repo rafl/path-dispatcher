@@ -42,7 +42,9 @@ sub _match {
     return if @$tokens && !$self->prefix; # had tokens left over
 
     my $leftover = $self->untokenize(@$tokens);
-    return $matched, $leftover;
+    return {
+        positional_captures => $matched,
+    }, $leftover;
 }
 
 sub complete {

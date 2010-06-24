@@ -9,7 +9,7 @@ my (@matches, @calls);
 my $dispatcher = Path::Dispatcher->new;
 $dispatcher->add_rule(
     Path::Dispatcher::Rule::CodeRef->new(
-        matcher => sub { push @matches, $_; length > 5 },
+        matcher => sub { push @matches, $_; { positional_captures => [length > 5] } },
         block   => sub { push @calls, [@_] },
     ),
 );

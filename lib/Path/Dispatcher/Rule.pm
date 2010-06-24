@@ -44,22 +44,11 @@ sub match {
 
     $leftover = '' if !defined($leftover);
 
-    # make sure that the returned values are PLAIN STRINGS
-    # later we will stick them into a regular expression to populate $1 etc
-    # which will blow up later!
-
-    if (ref($result) eq 'ARRAY') {
-        for (@$result) {
-            die "Invalid result '$_', results must be plain strings"
-                if ref($_);
-        }
-    }
-
     my $match = $self->match_class->new(
         path     => $path,
         rule     => $self,
-        result   => $result,
         leftover => $leftover,
+        (ref $result eq 'HASH') ? %$result : (),
     );
 
     $self->trace(match => $match) if $ENV{'PATH_DISPATCHER_TRACE'};
