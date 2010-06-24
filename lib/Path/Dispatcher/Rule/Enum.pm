@@ -18,16 +18,22 @@ sub _match {
     my $self = shift;
     my $path = shift;
 
+    my $p = $path->path;
+
     if ($self->case_sensitive) {
         for my $value (@{ $self->enum }) {
-            return {} if $path->path eq $value;
+            return { positional_captures => [ $p ] }
+                if $p eq $value;
         }
     }
     else {
         for my $value (@{ $self->enum }) {
-            return {} if lc($path->path) eq lc($value);
+            return { positional_captures => [ $p ] }
+                if lc($p) eq lc($value);
         }
     }
+
+    return;
 }
 
 sub _prefix_match {
