@@ -22,8 +22,9 @@ has case_sensitive => (
 );
 
 sub _match_as_far_as_possible {
-    my $self = shift;
-    my $path = shift;
+    my $self  = shift;
+    my $path  = shift;
+    my $named = shift;
 
     my @got      = $self->tokenize($path->path);
     my @expected = $self->tokens;
@@ -33,7 +34,7 @@ sub _match_as_far_as_possible {
         my $expected = $expected[0];
         my $got      = $got[0];
 
-        last unless $self->_match_token($got, $expected);
+        last unless $self->_match_token($got, $expected, $named);
 
         push @matched, $got;
         shift @expected;
@@ -47,7 +48,9 @@ sub _match {
     my $self = shift;
     my $path = shift;
 
-    my ($matched, $got, $expected) = $self->_match_as_far_as_possible($path);
+    my $named = {};
+
+    my ($matched, $got, $expected) = $self->_match_as_far_as_possible($path, $named);
 
     return if @$expected; # didn't provide everything necessary
     return if @$got && !$self->prefix; # had tokens left over
@@ -55,7 +58,8 @@ sub _match {
     my $leftover = $self->untokenize(@$got);
     return {
         positional_captures => $matched,
-        leftover => $leftover,
+        named_captures      => $named,
+        leftover            => $leftover,
     };
 }
 
@@ -104,6 +108,7 @@ sub _match_token {
     my $self     = shift;
     my $got      = shift;
     my $expected = shift;
+    my $named    = shift;
 
     my $matched = 0;
     $self->_each_token($got, $expected, sub {
@@ -114,6 +119,7 @@ sub _match_token {
         }
         elsif (ref($e) eq 'Regexp') {
             $matched ||= $g =~ $e;
+            @$named{keys %+} = values %+;
         }
     });
 
