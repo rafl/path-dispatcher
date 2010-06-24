@@ -55,12 +55,18 @@ sub _run_with_capture_vars {
     # it'd be nice if we could use "local" but it seems to break tests
     my $i = 0;
     no strict 'refs';
-    *{ ++$i } = \$_ for @{ $self->positional_captures };
 
     # populate %+
     *+ = $self->named_captures;
 
-    $code->();
+    my $assignments = join "\n",
+        map { "local *$_ = \\(\$self->positional_captures->[$_-1]);" }
+        1 .. @{ $self->positional_captures };
+
+    eval "
+        $assignments;
+        \$code->();
+    ";
 }
 
 __PACKAGE__->meta->make_immutable;

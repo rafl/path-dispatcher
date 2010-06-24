@@ -31,8 +31,5 @@ $dispatch->run;
 
 is_deeply([splice @vars], [['bus', 'train', undef]]);
 
-TODO: {
-    local $TODO = "we stomp on number vars..";
-    is_deeply([$1, $2, $3, $4], ["a", "b", "c", undef]);
-};
+is_deeply([$1, $2, $3, $4], ["a", "b", "c", undef]);
 
