@@ -31,7 +31,7 @@ is_deeply([$1, $2, $3, $4, \%+], ["a", "b", "c", undef, {head=>'a',tail=>'c'}]);
 
 $dispatch->run;
 
-is_deeply([splice @vars], [['bus', 'train', undef, {head=>'a',tail=>'c',auto=>'train',style=>'bus'}]]);
+is_deeply([splice @vars], [['bus', 'train', undef, {auto=>'train',style=>'bus'}]]);
 
 TODO: {
     local $TODO = "we stomp on capture vars..";
