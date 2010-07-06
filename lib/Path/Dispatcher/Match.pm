@@ -59,9 +59,10 @@ sub _run_with_capture_vars {
     # populate %+
     *+ = $self->named_captures;
 
+    my @positional = @{ $self->positional_captures };
     my $assignments = join "\n",
-        map { "local *$_ = \\(\$self->positional_captures->[$_-1]);" }
-        1 .. @{ $self->positional_captures };
+        map { "local *$_ = \\(\$positional[$_-1]);" }
+        1 .. @positional;
 
     eval "
         $assignments;
